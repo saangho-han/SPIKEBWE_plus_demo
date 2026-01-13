@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Audio Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+  <h1> Bridging Quality and Energy Efficiency with Spiking Mamba for Speech Bandwidth Extension </h1>
+
+  <!-- 저자 정보 -->
+  <div class="authors">
+    <span class="names">Donghyun Kim, Sangho Han and Joon-Hyuk Chang †</span>
+    <br>
+    <span>Department of Electronic Engineering<br>
+    Hanyang University, Seoul, Republic of Korea<br>
+    {utahboy3502, vxgkstkdhgxx, jchang}@hanyang.ac.kr</span>
+  </div>
+
+  <div class="abs123">    
+    Abstract
+  </div>
+
+  <!-- Abstract -->
+  <div class="abstract">
+    <p>
+      Artificial neural networks have significantly advanced speech bandwidth extension (BWE) but suffer from high computational complexity, limiting deployment on power-constrained edge devices.
+      While spiking neural networks (SNNs) offer an energy-efficient alternative, they often struggle to capture the long-range temporal dependencies required for high-fidelity reconstruction.
+      To address this, we propose SpikeBWE+ to synergize SNN efficiency with the global modeling capabilities of the Mamba architecture.
+      Experimental evaluations on the achieves reconstruction quality comparable to state-of-the-art baselines while reducing energy consumption by an order or magnitude, establishing a new benchmark for efficient, real-time speech restoration.
+    </p>
+  </div>
+
+  <div class="exp123">    
+    Experimental Results
+  </div>
+
+  <!-- Table -->
+  <div class="table-block">
+    <img src="table1.png" alt="Table 1" class="demo-img">
+  </div>
+  
+  <div class="samples-container">
+    <div class="samples-title">Samples</div>
+    <div id="list">Loading samples...</div>
+  </div>
+
+  <script>
+    async function loadSamples() {
+      const res = await fetch('samples.json');
+      const samples = await res.json();
+      const root = document.getElementById('list');
+      root.innerHTML = '';
+
+      samples.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'sample';
+
+        let html = `<h2>${s.label}</h2><div class="row">`;
+        s.items.forEach(item => {
+          html += `
+            <div class="method">
+              <p><strong>${item.name}</strong></p>
+              <img src="${item.img}" alt="${item.name} spectrogram" class="spec">
+              <audio controls preload="none" src="${item.wav}"></audio>
+            </div>
+          `;
+        });
+        html += `</div>`;
+
+        card.innerHTML = html;
+        root.appendChild(card);
+      });
+    }
+    loadSamples().catch(e=>{
+      document.getElementById('list').innerText='샘플을 불러오지 못했습니다.';
+    });
+  </script>
+</body>
